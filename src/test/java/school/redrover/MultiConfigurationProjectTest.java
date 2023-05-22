@@ -15,10 +15,10 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testMultiConfigurationProject() {
         TestUtils.createMultiConfigurationProject(this,"My Multi configuration project",false);
 
-        WebElement multiConfigurationProjectPage = new MultiConfigurationProjectPage(getDriver())
+        WebElement newNameJob = new MultiConfigurationProjectPage(getDriver())
                 .getProjectName();
 
-        Assert.assertEquals(multiConfigurationProjectPage.getText(), "Project My Multi configuration project");
+        Assert.assertEquals(newNameJob.getText(), "Project My Multi configuration project");
     }
 
     @Test(dependsOnMethods = "testMultiConfigurationProject")
@@ -27,20 +27,22 @@ public class MultiConfigurationProjectTest extends BaseTest {
         MainPage mainPage = new MainPage(getDriver());
                 mainPage.getProjectName()
                         .click();
-        WebElement multiConfigurationProjectPage = (WebElement) new MultiConfigurationProjectPage(getDriver())
+        WebElement addDescriptionText = (WebElement) new MultiConfigurationProjectPage(getDriver())
                 .getAddDescription(text)
                 .getSaveButton()
                 .getInputAdd();
-        Assert.assertEquals(multiConfigurationProjectPage.getText(), text);
+        Assert.assertEquals(addDescriptionText.getText(), text);
     }
 
     @Test (dependsOnMethods = "testMultiConfigurationProjectAddDescription")
     public void testMultiConfigurationProjectDisable () {
-        getDriver().findElement(By.xpath("//span[text() = 'My Multi configuration project']")).click();
+        MainPage mainPageName = new MainPage(getDriver());
+        mainPageName.getProjectName()
+                .click();
+        WebElement disable = (WebElement) new MultiConfigurationProjectPage(getDriver())
+                .getDisableClick().getEnableSwitch();
 
-        getDriver().findElement(By.xpath("//button[text () = 'Disable Project']")).click();
-
-        Assert.assertEquals((getDriver().findElement(By.xpath("//button[text () = 'Enable']"))).getText(),"Enable");
+        Assert.assertEquals(disable.getText(),"Enable");
     }
 
     @Test (dependsOnMethods = "testMultiConfigurationProjectDisable")
